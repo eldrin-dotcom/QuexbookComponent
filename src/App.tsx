@@ -10,9 +10,7 @@ import {
   Sparkles,
   BarChart2,
   ClipboardCheck,
-  Moon,
   Sun,
-  GraduationCap,
   Menu,
   X
 } from 'lucide-react';

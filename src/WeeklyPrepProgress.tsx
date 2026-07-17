@@ -1,6 +1,5 @@
 import { useState, useMemo, useCallback } from 'react';
-import { 
-  ChevronRight, 
+import {  
   X, 
   Sparkles, 
   FileText, 
@@ -31,6 +30,8 @@ interface WeekData {
   weekOf: string;
   subjects: SubjectData[];
 }
+
+
 
 // --- Mock Data ---
 const initialMockWeekData: WeekData = {
@@ -159,7 +160,7 @@ const AIPanel = ({
           <div className="w-full space-y-3 mt-4">
             {/* Primary Action: Links to AI Tools & resolves the item in local state */}
             <a 
-              href="https://quexbook.app/educator/ai-tools"
+              href={aiToolsUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => onComplete(subject.id, day.date, missingItem)}
@@ -195,10 +196,17 @@ export default function WeeklyPrepProgress({ isDarkMode = false }: { isDarkMode?
   const [activeTask, setActiveTask] = useState<{subject: SubjectData, day: DayData, missingItem: string} | null>(null);
 
   // --- Derived State & Calculations ---
-  const { totalDays, preparedDays, overallPercentage, nextAction } = useMemo(() => {
+  interface SummaryStats {
+    totalDays: number;
+    preparedDays: number;
+    overallPercentage: number;
+    nextAction: { subject: SubjectData; day: DayData; missingItem: string } | null;
+  }
+
+  const { totalDays, preparedDays, overallPercentage, nextAction } = useMemo<SummaryStats>(() => {
     let total = 0;
     let prepared = 0;
-    let nextUnpreparedDay: { subject: SubjectData, day: DayData, missingItem: string } | null = null;
+    let nextUnpreparedDay: { subject: SubjectData; day: DayData; missingItem: string } | null = null;
 
     weekData.subjects.forEach(subject => {
       subject.days.forEach(day => {
